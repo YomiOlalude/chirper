@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <form method="POST" action="create-chirp">
+        {% csrf_token %}
+        <input type="hidden" value="/" name="next">
+        <textarea name="content" placeholder="Your Chirp"></textarea>
+        <button type="submit">Chirp</button>
+    </form>
+</div>
+
+{% for chirp in chirps  %}
+
+@{{chirp.user}} | {{chirp.content}} <br><hr>
+  
+{% endfor %}
+  
+{% endblock content %}
