@@ -21,16 +21,20 @@ class ChirpCreateSerializer(serializers.ModelSerializer):
     
 class ChirpSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
-    content = serializers.SerializerMethodField(read_only=True)
+    parent = ChirpCreateSerializer(read_only=True)
+    
     class Meta:
         model = Chirp
-        fields = ["id", "content", "likes"]
+        fields = ["id", "content", "likes", "is_rechirp", "parent"]
         
     def get_likes(self, obj):
         return obj.likes.count() 
     
     def get_content(self, obj):
-        return obj.content
+        content = obj.content
+        if obj.is_rechirp:
+            content = obj.parent.content
+        return content
 
 
 class ChirpActionSerializer(serializers.Serializer):

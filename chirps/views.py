@@ -24,7 +24,7 @@ def chirps_list_view(request, *args, **kwargs):
 
 
 @api_view(["POST"])
-@authentication_classes(SessionAuthentication)
+# @authentication_classes(SessionAuthentication)
 @permission_classes([IsAuthenticated])
 def chirp_create_view(request, *args, **kwargs):
     serializer = ChirpSerializer(data=request.POST or None)
@@ -79,12 +79,16 @@ def chirp_action_view(request, chirp_id, *args, **kwargs):
         obj = queryset.first()
         if action == "like":
             obj.likes.add(request.user)
+            serializer = ChirpSerializer(obj)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         elif action == "unlike":
             obj.likes.remove(request.user)
+            serializer = ChirpSerializer(obj)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         elif action == "rechirp":
             new_chirp = Chirp.objects.create(user=request.user, parent=obj, content=content)
             serializer = ChirpSerializer(new_chirp)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response({"message": "Tweet removed"}, status=status.HTTP_200_OK)
 
 

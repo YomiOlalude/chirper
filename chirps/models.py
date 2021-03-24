@@ -25,5 +25,9 @@ class Chirp(models.Model):
     
     class Meta:
         ordering = ["-id"]
+        
+    @property
+    def is_rechirp(self):
+        return self.parent != None
 
     
