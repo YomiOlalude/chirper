@@ -26,6 +26,9 @@ SECRET_KEY = '&ko0ws^qqwn-9=$q_hqz7qcw*rg6i4o0$#y2jh9q8%o#da(3n3'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+MAX_CHIRP_LENGTH = 280
+CHIRP_ACTION_OPTIONS = ["like", "unlike", "rechirp"]
+
 
 
 # Application definition
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chirps',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +123,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        "rest_framework.authentication.SessionAuthentication"
+    ],
+    
+    'DEFAULT_RENDERER_CLASSES': [
+    'rest_framework.renderers.JSONRenderer',
+    'rest_framework.renderers.BrowsableAPIRenderer',
+]
+}
